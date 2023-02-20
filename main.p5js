@@ -1,0 +1,17 @@
+[
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "Home screen: Colorful circles and start button."
+  },
+  {
+    "kind": 2,
+    "language": "javascript",
+    "value": "let x = 0;\nlet y = 0;\nlet r = 50;\n\nfunction setup() {\n    background(255, 255, 255);\n    frameRate(5);\n    }\n\nfunction homeScreen(){\n    x = random(width);\n    y = random(height);\n    r = random(50);\n    red = random(255);\n    green = random(255);\n    blue = random(255);\n    c = color(red, green, blue);\n    fill(c);\n    ellipse(x, y, 2*r);\n}\n\nfunction button(){\n    fill(255, 0, 0);\n    rect(200, 200 ,200, 50, 10);\n\n    fill(255, 255, 255);\n    text(\"Start The Game\", 225, 230);\n    textSize(20);\n}\n\nfunction draw(){\n    homeScreen();\n    button();\n}"
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "Game Screen: "
+  }
+]
