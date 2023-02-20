@@ -2,12 +2,14 @@ let x = 0;
 let y = 0;
 let r = 50;
 
-let spaceShipX = 300;
-let spaceShipY = 300;
+let spaceShipX = 400;
+let spaceShipY = 400;
+let rotation = 0;
+let speed = 0;
 
 function setup() {
     background(255, 255, 255);
-    frameRate(5);
+    frameRate(10);
     }
 
 function homeScreen(){
@@ -33,21 +35,23 @@ function button(){
     textSize(20);
 }
 
-function gameScreen(){
-    background(255, 255, 255);
-
+function gameScreen(spaceShipX, spaceShipY, rotation){
+    push();
+    
+    // background(255, 255, 255);
+    rotate(rotation);
     fill(25, 100, 200);
-    arc(spaceShipX , spaceShipY + 140, 100, 60, PI, 0);
-    ellipse(spaceShipX, spaceShipY + 110, 20, 50);
+    arc(300 , 450, 100, 60, PI, 0);
+    ellipse(300, 400, 20, 50);
 
     fill(200, 100, 100);
-    ellipse(spaceShipX , spaceShipY + 100, 50, 100);
+    ellipse(300 , 400, 50, 100);
 
     fill(25, 100, 200);
-    ellipse(spaceShipX, spaceShipY + 130, 10, 50);
+    ellipse(300, 440, 10, 50);
 
     base();
-
+    pop();
 }
 
 function base(){
@@ -56,8 +60,31 @@ function base(){
 }
 
 
+
+
+
 function draw(){
+    background(255, 255, 255);
     // homeScreen();
-    gameScreen();
+    gameScreen(spaceShipX, spaceShipY, rotation);
     
+    spaceShipX = Math.cos(rotation) * speed;
+    spaceShipY = Math.sin(rotation) * speed;
+
+    if (keyIsDown(38)){
+        speed = 5;
+    } else if (keyIsDown(40)){
+        speed = -5;
+    } else {
+        speed = 0;
+    }
+    if (keyIsDown(37)){
+        rotation = rotation - 0.05;
+    } else if (keyIsDown(39)){
+        rotation = rotation + 0.05;
+    }
+    
+
 }
+
+console.log(spaceShipX);
