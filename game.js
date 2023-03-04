@@ -1,8 +1,8 @@
-
 let x = 0;
 let y = 0;
 let rotation = 0;
 let speed = 0;
+let gravity = 1;
 
 let waveHeight = 20;
 let waveSpacing = 0.05;
@@ -11,10 +11,15 @@ let ringRotation = 0;
 
 let baseX = 600;
 let baseY = 550;
+let direction = 1;
+
+let fuelLevel = 200;
+
 
 function setup() {
     createCanvas(600, 600);
     background(255, 255, 255);
+    frameRate(30);
 }
 
 
@@ -66,21 +71,24 @@ function spaceShip(x, y){
     ellipse (300, 120, 20, random(30, 50));
 
     //spaceship drawing
+    
     fill(25, 100, 200);
     arc(300 , 120, 50, 40, PI, 0);
     
     
     fill(255, 0, 0);
     ellipse(300, 100, 30, 60);
-
-    fill(25, 100, 200);
+    
+    fill(random(150, 200));
     ellipse(300, 120, 10, 20);
 
     ellipse (300, 100, 10, 10);
     ellipse(300, 85, 10, 10);
 
+    //Light
+    fill(255, 255, 255, 100);
+    triangle(300, 75, 280, 40, 320, 40);
     pop();
-    
 }
 
 
@@ -93,10 +101,10 @@ function drawBase() {
     fill(120, 120, 120);
     rect(baseX, 530, 80, 15, 5);
     pop();
-    baseX -= 2;
-    if (baseX < -50){
-        baseX = width + 50;
-    }
+    baseX -= 3 * direction;
+    if (baseX > width || baseX <0){
+    direction *= -1;    
+}
 }
 
 function waves() {
@@ -118,17 +126,8 @@ function waves() {
 }
 
 
-function checkLanding() {
-    if (dist(x, y, baseX, baseY) < 50) {
-      // Land the spaceship on the base
-      x = baseX;
-      y = baseY - 60;
-    }
-  }
 function draw(){
-    background(0, 0 ,30);
-    // translate(x, y);
-    
+    background(0, 0 ,40, 150);
     spaceShip(x, y);
     moon();
     drawBase();
@@ -136,24 +135,29 @@ function draw(){
     waves();
     pop();
 
-    if (dist(x, y, baseX, baseY) < 100) {
-        // Land the spaceship on the base
-        x = baseX;
-        y = baseY - 60;
-    }
-
+    textSize(16);
+    fill(255);
+    text("Fuel: " + fuelLevel, 20, 20);
+    y += gravity;
+    
     //Moving the spaceship
-    if (dist(x, y, baseX, baseY) >= 50) {if (keyIsDown(38)){
+    if (dist(x, y, baseX, baseY) >= 50) {
+        if (keyIsDown(38) && fuelLevel > 0){
+            //move up
         y -= 3;
-    } else if (keyIsDown(40)){
-        y += 3; console.log(x, y);
-    } if (keyIsDown(37)){
+        fuelLevel -= 1;
+    } else if (keyIsDown(40) && fuelLevel > 0){
+        //move down
+        y += 3;
+        fuelLevel -= 1;
+    } if (keyIsDown(37) && fuelLevel > 0){
+        //move left
         x -= 3;
-    } else if (keyIsDown(39)){
+        fuelLevel -= 1;
+    } else if (keyIsDown(39) && fuelLevel > 0){
+        // move right
         x += 3;
-    }
+        fuelLevel -= 1;
+    } 
 }
-checkLanding();
 }
-
-
