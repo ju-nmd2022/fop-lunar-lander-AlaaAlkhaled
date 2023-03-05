@@ -152,7 +152,6 @@ function waves() {
     }
 }
 
-
 function draw(){
     if (start){
     background(0, 0 ,40);
@@ -186,25 +185,24 @@ function draw(){
         // move right
         x += 3;
         fuelLevel -= 1;
-    } 
-}
-
-if (x > 55 || y === 450){
-    speed = 0;
-    gravity = 0;
-    background(220);
-    textAlign(CENTER, CENTER);
-    fill(255, 0, 0);
-    text("Epic fail!", width / 2, height / 2);
-    noLoop();
-} else if (x <= 50 && y === 400){
-    gravity = 0;
-    textSize(32);
-    textAlign(CENTER, CENTER);
-    fill(0, 255, 0);
-    text("Smooth landing", width / 2, height / 2);
+    } if (x > -220 && y === 410){
+        speed = 0;
         
+        
+        background(220);
+        textAlign(CENTER, CENTER);
+        fill(0, 0, 0);
+        text("Epic fail!", width / 2, height / 2);
+        noLoop();
+    } else if (x <= -220 && y === 400){
+        gravity = 0;
+        textSize(32);
+        textAlign(CENTER, CENTER);
+        fill(255, 0, 0);
+        text("Smooth landing", width / 2, height / 2);
+    }
 }
+console.log(x);
 }else {
     button();
     startGame();
@@ -212,4 +210,6 @@ if (x > 55 || y === 450){
     if (mouseX >= 200 && mouseX <= 400 && mouseY >= 250 && mouseY <= 300) {
         start = true;
     }
+    
 }
+
