@@ -1,3 +1,9 @@
+let circlesX = 0;
+let circlesY = 0;
+let circlesR = 50;
+
+let start = false;
+
 let x = 0;
 let y = 0;
 let rotation = 0;
@@ -9,7 +15,7 @@ let waveSpacing = 0.05;
 
 let ringRotation = 0;
 
-let baseX = 600;
+let baseX = 50;
 let baseY = 550;
 let direction = 1;
 
@@ -20,6 +26,27 @@ function setup() {
     createCanvas(600, 600);
     background(255, 255, 255);
     frameRate(30);
+}
+
+function startGame(){
+    circlesX = random(width);
+    circlesY = random(height);
+    circlesR = random(50);
+    red = random(255);
+    green = random(255);
+    blue = random(255);
+    c = color(red, green, blue);
+    fill(c);
+    ellipse(circlesX, circlesY, 2*circlesR);
+}
+
+function button(){
+    fill(255, 0, 0);
+    rect(200, 250 , 200, 50, 10);
+
+    fill(255, 255, 255);
+    textSize(20);
+    text("Start The Game", 230, 280);
 }
 
 
@@ -101,11 +128,11 @@ function drawBase() {
     fill(120, 120, 120);
     rect(baseX, 530, 80, 15, 5);
     pop();
-    baseX -= 3 * direction;
-    if (baseX > width || baseX <0){
-    direction *= -1;    
+    // baseX -= 3 * direction;
+    // if (baseX > width || baseX <0){
+    // direction *= -1;    
 }
-}
+
 
 function waves() {
     push();
@@ -127,7 +154,8 @@ function waves() {
 
 
 function draw(){
-    background(0, 0 ,40, 150);
+    if (start){
+    background(0, 0 ,40);
     spaceShip(x, y);
     moon();
     drawBase();
@@ -160,4 +188,28 @@ function draw(){
         fuelLevel -= 1;
     } 
 }
+
+if (x > 55 || y === 450){
+    speed = 0;
+    gravity = 0;
+    background(220);
+    textAlign(CENTER, CENTER);
+    fill(255, 0, 0);
+    text("Epic fail!", width / 2, height / 2);
+    noLoop();
+} else if (x <= 50 && y === 400){
+    gravity = 0;
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    fill(0, 255, 0);
+    text("Smooth landing", width / 2, height / 2);
+        
+}
+}else {
+    button();
+    startGame();
+}
+    if (mouseX >= 200 && mouseX <= 400 && mouseY >= 250 && mouseY <= 300) {
+        start = true;
+    }
 }
