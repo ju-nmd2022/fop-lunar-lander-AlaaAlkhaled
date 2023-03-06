@@ -94,3 +94,11 @@
 //     button();
 // }
 
+function draw(){
+    fill(255, 0, 0);
+    rect(200, 250, 200, 50, 10);
+    
+    fill(255, 255, 255);
+    textSize(20);
+    text("Play again", 250, 280);
+}
