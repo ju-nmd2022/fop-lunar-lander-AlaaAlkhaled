@@ -3,7 +3,6 @@ let circlesY = 0;
 let circlesR = 50;
 
 let start = false;
-
 let x = 300;
 let y = 120;
 let rotation = 0;
@@ -20,10 +19,10 @@ let baseX = 50;
 let baseY = 550;
 let direction = 1;
 let fuelLevel = 300;
-
+buttonIsClicked = false;
 
 function setup() {
-createCanvas(600, 600);
+createCanvas(800, 800);
 background(255, 255, 255);
 frameRate(30);
 }
@@ -47,15 +46,6 @@ rect(200, 250, 200, 50, 10);
 fill(255, 255, 255);
 textSize(20);
 text("Start The Game", 230, 280);
-}
-
-function restartButton(){
-    fill(255, 0, 0);
-    rect(200, 250, 200, 50, 10);
-    
-    fill(255, 255, 255);
-    textSize(20);
-    text("Play again", 250, 280);
 }
 
 function moon() {
@@ -95,18 +85,9 @@ for (let i = 0; i < 5; i++) {
 
 function spaceShip(x, y) {
 push();
-
 translate(x, y);
 
-  //flames
-// noStroke();
-// fill(255, 180, 0);
-// ellipse(0, 0, random(15, 25), 60);
-// fill(255, 255, 0);
-// ellipse(0, 0, 20, random(30, 50));
-
   //spaceship drawing
-
 fill(25, 100, 200);
 arc(0, 0, 50, 40, PI, 0);
 
@@ -154,6 +135,7 @@ prevY = waveY;
 }
 
 function draw() {
+    push();
     if (start) {
     background(0, 0, 40);
     spaceShip(x, y);
@@ -174,6 +156,7 @@ function draw() {
         //move up
         translate(x, y);
         noStroke();
+        //flames
         fill(255, 180, 0);
         ellipse(0, 0, random(15, 25), 50);
         fill(255, 255, 0);
@@ -196,22 +179,22 @@ function draw() {
         }
 
         if (x > 90 && y > 570) {
-        background(220);
-        restartButton();
-        textAlign(CENTER, CENTER);
-        fill(0, 0, 0);
-        text("Epic fail!", 300, 150);
-        noLoop();
+            background(220);
+            textSize(32);
+            textAlign(CENTER, CENTER);
+            fill(255, 0, 0);
+            text("Epic fail!", width / 2, height / 2);
+        start = true;
 
-        } else if (x <70  && y >= 530 && speed < 5) {
+        } else if (x <70  && y > 500) {
         gravity = 0;
+        background(220);
         textSize(32);
         textAlign(CENTER, CENTER);
         fill(255, 0, 0);
-        text("Smooth landing", width / 2, height / 2);
+        text("Mission completed", width / 2, height / 2);
         noLoop();
         }
-        
         console.log( y);
     }
     } else {
@@ -220,7 +203,10 @@ function draw() {
     }
     if (mouseX >= 200 && mouseX <= 400 && mouseY >= 250 && mouseY <= 300) {
     start = true;
+    buttonIsClicked = true;
     }
+    pop();
 }
+
 
 
