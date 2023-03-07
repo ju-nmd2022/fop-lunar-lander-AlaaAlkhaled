@@ -8,7 +8,6 @@ let y = 120;
 let rotation = 0;
 let speed = 3;
 let gravity = 4;
-let velocity = 1;
 
 let waveHeight = 20;
 let waveSpacing = 0.05;
@@ -22,7 +21,8 @@ let fuelLevel = 300;
 buttonIsClicked = false;
 
 function setup() {
-createCanvas(800, 800);
+createCanvas(700, 800);
+// canvas.parent("myGame");
 background(255, 255, 255);
 frameRate(30);
 }
@@ -148,10 +148,10 @@ function draw() {
     textSize(16);
     fill(255);
     text("Fuel: " + fuelLevel, 20, 20);
-    y += speed;
+    y += gravity;
 
     //Moving the spaceship
-    if (dist(x, y, baseX, baseY) >= 50) {
+    if (dist(x, y, baseX, baseY) >= 10) {
         if (keyIsDown(38) && fuelLevel > 0) {
         //move up
         translate(x, y);
@@ -165,7 +165,7 @@ function draw() {
         fuelLevel -= 2;
         } else if (keyIsDown(40) && fuelLevel > 0) {
         //move down
-        y += 5;
+        y += 6;
         fuelLevel -= 2;
         }
         if (keyIsDown(37) && fuelLevel > 0) {
@@ -177,25 +177,34 @@ function draw() {
         x += 3;
         fuelLevel -= 1;
         }
-
-        if (x > 90 && y > 570) {
+        if (x >40 && x < 70 && y >= 400) {
+            gravity = 1;
+            speed = 1;
+            textSize(32);
+            textAlign(CENTER, CENTER);
+            fill(255, 0, 0);
+            if(y>400 && y < 480){
+            text("Move slow to the base", width / 2, height / 2);}
+            console.log(y);
+            if ( y == 500){
+            gravity = 0;
+            textSize(32);
+            textAlign(CENTER, CENTER);
+            fill(255, 0, 0);
+            text("Smooth landing ", width / 2, height / 2);
+            console.log(y);
+            noLoop();
+            }
+            }
+            else if (x > 61 && y > 570) {
             background(220);
             textSize(32);
             textAlign(CENTER, CENTER);
             fill(255, 0, 0);
             text("Epic fail!", width / 2, height / 2);
-        start = true;
-
-        } else if (x <70  && y > 500) {
-        gravity = 0;
-        background(220);
-        textSize(32);
-        textAlign(CENTER, CENTER);
-        fill(255, 0, 0);
-        text("Mission completed", width / 2, height / 2);
-        noLoop();
+            noLoop();
+            start = true;
         }
-        console.log( y);
     }
     } else {
     button();
@@ -207,6 +216,3 @@ function draw() {
     }
     pop();
 }
-
-
-
