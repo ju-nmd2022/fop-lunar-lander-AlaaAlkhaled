@@ -178,7 +178,7 @@ function showGameOver() {
 }
 
 function showGameWon() {
-  background(220);
+  // background(220);
   textSize(32);
   textAlign(CENTER, CENTER);
   fill(255, 0, 0);
@@ -187,9 +187,10 @@ function showGameWon() {
 }
 
 function draw() {
-  push();
+  
   if (start) {
     if (!gameOver && !gameWon) {
+      push();
       background(0, 0, 40);
       spaceShip(x, y);
       moon();
@@ -198,7 +199,7 @@ function draw() {
       waves();
       pop();
 
-      textSize(24);
+      textSize(16);
       fill(255);
       text("Fuel: " + fuelLevel, 20, 20);
       y += gravity;
