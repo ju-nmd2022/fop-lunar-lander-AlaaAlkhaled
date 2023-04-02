@@ -1,6 +1,3 @@
-let circlesX = 0;
-let circlesY = 0;
-let circlesR = 50;
 
 let start = false;
 let x = 300;
@@ -18,11 +15,12 @@ let baseX = 50;
 let baseY = 550;
 let direction = 1;
 let fuelLevel = 300;
-buttonIsClicked = false;
+
+let gameOver = false;
+let gameWon = false;
 
 function setup() {
 createCanvas(700, 800);
-// canvas.parent("myGame");
 background(255, 255, 255);
 frameRate(30);
 }
@@ -31,11 +29,13 @@ function startGame() {
 circlesX = random(width);
 circlesY = random(height);
 circlesR = random(50);
+
 red = random(255);
 green = random(255);
 blue = random(255);
+
 c = color(red, green, blue);
-fill(c);
+fill(color(random(255), random(255), random(255)));
   ellipse(circlesX, circlesY, 2 * circlesR);
 }
 
@@ -117,10 +117,9 @@ pop();
 }
 
 function waves() {
-push();
+
 fill(20, 120, 204);
 rect(-width, 565, width * 2, height);
-pop();
 
 strokeWeight(10);
 stroke(20, 120, 200);
@@ -134,85 +133,142 @@ prevY = waveY;
 }
 }
 
-function draw() {
-    push();
-    if (start) {
-    background(0, 0, 40);
-    spaceShip(x, y);
-    moon();
-    drawBase();
-    push();
-    waves();
-    pop();
-    
-    textSize(16);
-    fill(255);
-    text("Fuel: " + fuelLevel, 20, 20);
-    y += gravity;
+function retryButton() {
+  if (gameOver || gameWon) {
+    fill(255, 0, 0);
+    rect(width / 2 - 100, height / 2 + 50, 200, 50, 10);
+    fill(255, 255, 255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text("Retry", width / 2, height / 2 + 75);
+  }
+}
 
-    //Moving the spaceship
-    if (dist(x, y, baseX, baseY) >= 10) {
+function resetGame() {
+  x = 300;
+  y = 120;
+  rotation = 0;
+  speed = 3;
+  gravity = 4;
+  fuelLevel = 300;
+  start = false;
+  gameOver = false;
+  gameWon = false;
+  loop();
+}
+
+function mousePressed() {
+  if (!start && mouseX >= 200 && mouseX <= 400 && mouseY >= 250 && mouseY <= 300) {
+    start = true;
+  }
+
+  if ((gameOver || gameWon )&& mouseX >= width / 2 - 100 && mouseX <= width / 2 + 100 && mouseY >= height / 2 + 50 && mouseY <= height / 2 + 100) {
+    resetGame();
+    start = true;
+  }
+}
+
+function showGameOver() {
+  background(220);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  fill(255, 0, 0);
+  text("Epic fail!", width / 2, height / 2);
+  retryButton();
+}
+
+function showGameWon() {
+  background(220);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  fill(255, 0, 0);
+  text("Smooth landing!", width / 2, height / 2);
+  retryButton();
+}
+
+function draw() {
+  push();
+  if (start) {
+    if (!gameOver && !gameWon) {
+      background(0, 0, 40);
+      spaceShip(x, y);
+      moon();
+      drawBase();
+      push();
+      waves();
+      pop();
+
+      textSize(24);
+      fill(255);
+      text("Fuel: " + fuelLevel, 20, 20);
+      y += gravity;
+
+      // Moving the spaceship
+      if (dist(x, y, baseX, baseY) >= 10) {
         if (keyIsDown(38) && fuelLevel > 0) {
-        //move up
-        translate(x, y);
-        noStroke();
-        //flames
-        fill(255, 180, 0);
-        ellipse(0, 0, random(15, 25), 50);
-        fill(255, 255, 0);
-        ellipse(0, 0, 20, random(30, 40));
-        y -= 5;
-        fuelLevel -= 2;
-        } else if (keyIsDown(40) && fuelLevel > 0) {
-        //move down
-        y += 6;
-        fuelLevel -= 2;
+          // move up
+          translate(x, y);
+          noStroke();
+          // flames
+          fill(255, 180, 0);
+          ellipse(0, 0, random(15, 25), 50);
+          fill(255, 255, 0);
+          ellipse(0, 0, 20, random(30, 40));
+          y -= 5;
+          fuelLevel -= 2;
+        } 
+        else if (keyIsDown(40) && fuelLevel > 0) {
+          // move down
+          y += 6;
+          fuelLevel -= 2;
         }
         if (keyIsDown(37) && fuelLevel > 0) {
-        //move left
-        x -= 3;
-        fuelLevel -= 1;
-        } else if (keyIsDown(39) && fuelLevel > 0) {
-        // move right
-        x += 3;
-        fuelLevel -= 1;
+          // move left
+          x -= 3;
+          fuelLevel -= 1;
+        } 
+        else if (keyIsDown(39) && fuelLevel > 0) {
+          // move right
+          x += 3;
+          fuelLevel -= 1;
         }
-        if (x >40 && x < 70 && y >= 400) {
-            gravity = 1;
-            speed = 1;
-            textSize(32);
-            textAlign(CENTER, CENTER);
-            fill(255, 0, 0);
-            if(y>400 && y < 480){
-            text("Move slow to the base", width / 2, height / 2);}
-            console.log(y);
-            if ( y == 500){
+        if (x > 40 && x < 70 && y >= 400) {
+          gravity = 1;
+          speed = 1;
+          textSize(32);
+          textAlign(CENTER, CENTER);
+          fill(255, 0, 0);
+          if (y > 400 && y < 480) {
+            text("Move slow to the base", width / 2, height / 2);
+          }
+          if (y == 500) {
+            gameWon = true;
             gravity = 0;
             textSize(32);
             textAlign(CENTER, CENTER);
+            textStyle(BOLD);
             fill(255, 0, 0);
             text("Smooth landing ", width / 2, height / 2);
-            console.log(y);
             noLoop();
-            }
-            }
-            else if (x > 61 && y > 570) {
-            background(220);
-            textSize(32);
-            textAlign(CENTER, CENTER);
-            fill(255, 0, 0);
-            text("Epic fail!", width / 2, height / 2);
-            noLoop();
-            start = true;
+          }
+        } 
+        else if (x > 61 && y > 570) {
+          gameOver = true;
         }
+      }
+    } 
+    else {
+      showGameOver();
     }
-    } else {
+    if (gameOver) {
+      showGameOver();
+    } 
+    else if (gameWon) {
+      showGameWon();
+    }
+  } 
+  else {
     button();
     startGame();
-    }
-    if (mouseX >= 200 && mouseX <= 400 && mouseY >= 250 && mouseY <= 300) {
-    start = true;
-    buttonIsClicked = true;
-    }
-    pop();
+  }
 }
